@@ -14,15 +14,11 @@ class User:
 		self.carrier = carrier
 
 users = []
-# users.append(User('Sam Tubb', '8646067250', '29316', 'MetroPCS'))
-users.append(User('Richard Red', '6787733594', '30601', 'TMobile'))
-# users.append(User('Kenny Kim', '8474140183', '30118', 'Sprint'))
-# users.append(User('Jay Tang', '6789869272', '30601', 'Verizon'))
-# users.append(User('Caitlin Eng', '5163025963', '14850', 'Verizon'))
-# users.append(User('Kok Seng Tan', '6788637883', '30363', 'Verizon'))
-# users.append(User('Jinyong Jeong', '7066167044', '30601', 'Verizon'))
-users.append(User('Thomas Yoo', '4045141015', '30601', 'AT&T'))
-# users.append(User('Brandon Cho', '6782676899', '60201', 'AT&T'))
+users.append(User('Sam Tubb', '10digitphonenumber', '29316', 'MetroPCS'))
+users.append(User('Richard Red', '10digitphonenumber', '30601', 'TMobile'))
+
+def weather_info():
+	# get weather data and call in create_message()
 
 def create_message(zipcode):
 	api_url = 'http://api.openweathermap.org/data/2.5/weather?zip='+zipcode+',us&appid='+weather_apikey
