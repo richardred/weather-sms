@@ -10,8 +10,8 @@ A simple script that informs users via sms every morning whether or not they nee
 * [Amazon EC2](https://aws.amazon.com/ec2/) - a VPS provided by Amazon AWS
 
 ## Authors
-* **Richard Red** - *SMS functions, intial weather stuff* - [richardred](https://github.com/richardred)
-* **Sam Tubb** - *Weather stuff* - [sam0s](https://github.com/sam0s)
+* **Richard Red** - *SMS functions, intial weather API usage* - [richardred](https://github.com/richardred)
+* **Sam Tubb** - *advanced weather stuff* - [sam0s](https://github.com/sam0s)
 
 ## License
 This project is licensed under the MIT License - see the [License](LICENSE) file for details
