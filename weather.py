@@ -6,36 +6,34 @@ import smtplib
 
 client = Client(account_sid, auth_token)
 
-class User:
-	def __init__(self, name, number, zipcode, carrier):
-		self.name = name
-		self.number = number
-		self.zipcode = zipcode
-		self.carrier = carrier
 
-users = []
-users.append(User('Sam Tubb', '10digitphonenumber', '29316', 'MetroPCS'))
-users.append(User('Richard Red', '10digitphonenumber', '30601', 'TMobile'))
+def tempConvert(temp,type):
+	#return celc
+	if type=='c':
+		return temp-273.15
+	#return faren
+	if type=='f':
+		return ((temp-273.15)*1.8)+32
 
-def weather_info():
-	# get weather data and call in create_message()
-
-def create_message(zipcode):
+def weather_info(zipcode):
 	api_url = 'http://api.openweathermap.org/data/2.5/weather?zip='+zipcode+',us&appid='+weather_apikey
 	with urllib.request.urlopen(api_url) as url:
 		data = json.loads(url.read().decode())
+	#print()
+	temp = data['main']['temp']
+	minTemp = data['main']['temp_min']
+	maxTemp = data['main']['temp_max']
+	location = data['name']
+	return temp,minTemp,maxTemp,location
 
-	temp_k = data['main']['temp']
-	temp_c = temp_k - 273.15
-	temp_f = (temp_c * 1.8) + 32
+def create_message(zipcode):
+	temp,minTemp,maxTemp,location = weather_info(zipcode)
 
-	text = 'The current temperature is {:.2f}'.format(temp_f)+'F ({:.2f}'.format(temp_c)+'C). '
-	if temp_f >= 65:
-		text += 'You don\'t need a jacket today.'
-	elif 45 <= temp_f < 65:
-		text += 'You should wear a jacket today.'
-	elif temp_f < 45:
-		text += 'It\'s very cold today, you probably need more than a jacket.'
+	text = "\nThe temperature in {} is going to range from {:.2f}F to {:.2f}F ({:.2f}C to {:.2f}C)"
+	text=text.format(location,tempConvert(minTemp,'f'),tempConvert(maxTemp,'f'),tempConvert(minTemp,'c'),tempConvert(maxTemp,'c'))
+	text += '\nThe current temperature is {:.2f}F ({:.2f}C).'
+	text=text.format(tempConvert(temp,'f'),tempConvert(temp,'c'))
+
 	return text
 
 def send_twilio(name, number, message):
@@ -49,6 +47,7 @@ def notify():
 	s = smtplib.SMTP_SSL('smtp.gmail.com', 465)
 	s.login('yoyobrains0@gmail.com', mail_pass)
 	for x in users:
+		print (x.zipcode)
 		text = create_message(x.zipcode)
 		if x.carrier == 'TMobile' or x.carrier == 'MetroPCS':
 			send_twilio(x.name, x.number, text)
@@ -63,14 +62,15 @@ def notify():
 
 			try:
 				s.sendmail('Weather', x.number+gateway_address, text)
-				print('Message successfully sent to '+x.name+' at '+x.number+' via '+x.carrier+' SMTP-SMS gateway.')	
+				print('Message successfully sent to '+x.name+' at '+x.number+' via '+x.carrier+' SMTP-SMS gateway.')
 			except Exception as e:
 				print(e)
 	s.quit()
 
 def main():
 	print(datetime.now())
-	notify()
+	#notify()
+	print(create_message("29316"))
 	print('=====================================================================================')
 
 if __name__ == '__main__':
