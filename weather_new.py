@@ -13,17 +13,19 @@ def weather_info(zip):
     weather = Weather(unit=Unit.FAHRENHEIT)
     woe=yweather.fetch_woeid(zip)
     lookup = weather.lookup(woe)
-    condition = lookup.condition
-    forecasts = lookup.forecast
-
-    return condition
+    location = lookup.title.strip("Yahoo! Weather - ")
+    return {'condition':lookup.condition,'forecasts':lookup.forecast,'astronomy':lookup.astronomy,'location':location}
 
 def create_message(zip):
     info = weather_info(zip);
-    print (vars(info));
-    text = ""
+    #print (vars(info));
+    #print("The weather in
+    #info.temp info.text
+    text = "hey"
 
-    text=str(vars(info))
+    #text=str(vars(info))
+    print ("It is {}F in {}.".format(info['condition'].temp,info['location']))
+
     return text
 
 def send_twilio(name, number, message):
