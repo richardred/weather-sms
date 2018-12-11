@@ -3,8 +3,6 @@ from yweather import Client as YClient
 from twilio.rest import Client
 from credentials import *
 from datetime import datetime
-import urllib.request, json
-import smtplib
 
 client = Client(account_sid, auth_token)
 yweather = YClient()
@@ -18,13 +16,9 @@ def weather_info(zip):
 
 def create_message(zip):
     info = weather_info(zip);
-    #print (vars(info));
-    #print("The weather in
-    #info.temp info.text
-    text = "hey"
-
-    #text=str(vars(info))
-    print ("It is {}F in {}.".format(info['condition'].temp,info['location']))
+    text = "It is {}F in {}.".format(info['condition'].temp,info['location'])
+    text += "\nThe skies are "+info['condition'].text
+    print(text)
 
     return text
 
@@ -54,7 +48,10 @@ def notify():
 
 def main():
 
-    create_message('29316')
+    #enter zip code here
+    for f in users:
+        print("zip: "+f.zipcode+"\n")
+        create_message(f.zipcode)
     #notify()
 
 
