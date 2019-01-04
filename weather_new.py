@@ -7,6 +7,22 @@ from datetime import datetime
 client = Client(account_sid, auth_token)
 yweather = YClient()
 
+CONDITIONAL_STATEMENTS={
+"chilly":"\nIt's a bit chilly. We recommend wearing a sweater or light jacket.",
+"coldAF":"\nIt's incredibly cold! We recommend wearing several layers to keep warm!",
+"fair":"\nThe temperature is fair. No special clothing recommendations.",
+"warm":"\nIt's going to be a bit warm. We advise dressing lighter than normal.",
+"hotAF":"\nIt's going to be a hot one! Dress lightly!",
+}
+
+def condition_generator(data):
+    temp = data['condition'].temp
+    if int(temp)<55:
+        print(CONDITIONAL_STATEMENTS['coldAF'])
+    elif int(temp)<65:
+        print(CONDITIONAL_STATEMENTS['chilly'])
+
+
 def weather_info(zip):
     weather = Weather(unit=Unit.FAHRENHEIT)
     woe=yweather.fetch_woeid(zip)
@@ -19,7 +35,7 @@ def create_message(zip):
     text = "It is {}F in {}.".format(info['condition'].temp,info['location'])
     text += "\nThe skies are "+info['condition'].text
     print(text)
-
+    condition_generator(info)
     return text
 
 def send_twilio(name, number, message):
