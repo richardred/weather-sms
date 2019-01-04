@@ -54,7 +54,6 @@ def notify():
 			send_twilio(x.name, x.number, text)
 		else:
 			gateway_address = CARRIERS[x.carrier]
-
 			try:
 				s.sendmail('Weather', x.number+gateway_address, text)
 				print('Message successfully sent to '+x.name+' at '+x.number+' via '+x.carrier+' SMTP-SMS gateway.')
